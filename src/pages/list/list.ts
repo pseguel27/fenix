@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-list',
   templateUrl: 'list.html'
 })
 export class ListPage {
+
   selectedItem: any;
   icons: string[];
   items: Array<{title: string, note: string, icon: string}>;
@@ -26,11 +28,14 @@ export class ListPage {
         icon: this.icons[Math.floor(Math.random() * this.icons.length)]
       });
     }
+
   }
 
+
+
   itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(ListPage, {
+            console.log(item);
+    this.navCtrl.push(HomePage, {
       item: item
     });
   }
