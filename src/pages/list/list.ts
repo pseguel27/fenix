@@ -1,42 +1,52 @@
-import { Component } from '@angular/core';
+import { Injectable, Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { HomePage } from '../home/home';
+import { DeportivoFenixServiceProvider } from '../../providers/deportivo-fenix-service/deportivo-fenix-service';
+import { HttpClient } from '@angular/common/http'; 
+import 'rxjs/add/operator/map';
+import { Response } from '@angular/http';
+
 
 @Component({
   selector: 'page-list',
-  templateUrl: 'list.html'
+  templateUrl: 'list.html',
+  providers:[DeportivoFenixServiceProvider]
 })
+
+
 export class ListPage {
 
-  selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  DeportivoFenixServiceProvider: any;
+  newsData: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
+  constructor(public navCtrl: NavController, public deportivoFenixServiceProvider: DeportivoFenixServiceProvider) 
+  {
 
-    // Let's populate this page with some filler content for funzies
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    'american-football', 'boat', 'bluetooth', 'build'];
-
-    this.items = [];
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
-
+  }
+  
+  
+  ngOnInit(){
+     this.newsData = this.deportivoFenixServiceProvider.getJsonData().then();
+     console.log(this.newsData.series);
   }
 
 
 
-  itemTapped(event, item) {
-            console.log(item);
-    this.navCtrl.push(HomePage, {
-      item: item
-    });
+  /*
+  getdata(){
+    this.loading.present();
+    this.DeportivoFenixServiceProvider.flatMap(
+      result => {
+        this.newsData=result.data.children;
+        console.log("Success : "+this.newsData);
+      },
+      err =>{
+        console.error("Error : "+err);
+      } ,
+      () => {
+        this.loading.dismiss();
+        console.log('getData completed');
+      }
+    );
   }
+  */
 }
